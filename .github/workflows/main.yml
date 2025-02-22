@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: Self-hosted
 
     steps:
       - name: Checkout repository
@@ -27,7 +27,7 @@ jobs:
 
 
   push:
-    runs-on: ubuntu-latest
+    runs-on: Self-hosted
     needs: build
 
     steps: 
