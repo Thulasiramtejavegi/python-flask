@@ -15,7 +15,7 @@ jobs:
 
       - name: Build docker image
         run: |
-            IMAGE_NAME="$${{ secrets.DOCKER_USERNAME }}/python-flask"
+            IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
             docker build -t $IMAGE_NAME:latest .
             docker save -o python-flask-image.tar $IMAGE_NAME:latest
 
