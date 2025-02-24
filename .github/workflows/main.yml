@@ -1,6 +1,5 @@
 name: python action
 
-
 on:
   push:
       branches: ["main"]
