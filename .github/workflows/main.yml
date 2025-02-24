@@ -1,4 +1,4 @@
-name: python action
+name: python-action
 
 on:
   push:
