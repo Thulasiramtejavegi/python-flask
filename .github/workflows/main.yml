@@ -37,7 +37,7 @@ jobs:
             
           - name: load docker image
             run: |
-                IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}/python-flask"
+                IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}/python-flask:latest"
                 docker load -i python-flask-image.tar
 
           - name: login to docker hub
