@@ -16,7 +16,6 @@ jobs:
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
           sudo docker build -t $IMAGE_NAME:latest .
           sudo docker save -o python-flask-image.tar $IMAGE_NAME:latest
-          # Fix permissions on the tar file so the upload action can access it
           sudo chmod 644 python-flask-image.tar
 
       - name: upload docker image
