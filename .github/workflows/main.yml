@@ -1,0 +1,52 @@
+name: python actiom
+
+on:
+  push:
+    branches: ["main"]
+
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+
+      - name: Build docker image
+        run: |
+              IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
+              docker build -t $IMAGE_NAME:latest .
+              docker save -o python-flask-image.tar $IMAGE_NAME:latest
+
+      - name: upload docker image
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: python-flask-image.tar
+ 
+  push:
+    runs-on: ubuntu-latest
+    needs: build
+      steps: 
+          - name: download docker image
+            uses: action/download-artifact@v4
+            with:
+              name: docker-image
+            
+          - name: load docker image
+            run: |
+                IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}/python-flask"
+                docker load -i python-flask-image.tar
+
+          - name: login to docker hub
+            run: echo "${{ secret.DOCKER_PASSWORD }}" | docker login -u "${{ secret.DOCKER_USERNAME }}" --password-stdin
+  
+          - name: push to dockerhub
+            run: |
+               IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}//python-flask"
+               docker push $IMAGE_NAME:latest
+          
+
+
+           
