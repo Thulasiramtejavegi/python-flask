@@ -1,23 +1,22 @@
-name: python actiom
+name: python action
 
 on:
   push:
     branches: ["main"]
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: checkout repository
         uses: actions/checkout@v4
 
-
       - name: Build docker image
         run: |
-              IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
-              docker build -t $IMAGE_NAME:latest .
-              docker save -o python-flask-image.tar $IMAGE_NAME:latest
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
+          docker build -t $IMAGE_NAME:latest .
+          docker save -o python-flask-image.tar $IMAGE_NAME:latest
 
       - name: upload docker image
         uses: actions/upload-artifact@v4
@@ -30,24 +29,20 @@ jobs:
     needs: build
     
     steps:
-          - name: download docker image
-            uses: actions/download-artifact@v4
-            with:
-              name: docker-image
+      - name: download docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
             
-          - name: load docker image
-            run: |
-                IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}/python-flask:latest"
-                docker load -i python-flask-image.tar
+      - name: load docker image
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask:latest"
+          docker load -i python-flask-image.tar
 
-          - name: login to docker hub
-            run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
   
-          - name: push to dockerhub
-            run: |
-               IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}/python-flask"
-               docker push $IMAGE_NAME:latest
-          
-
-
-           
+      - name: push to dockerhub
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask:latest"
+          docker push $IMAGE_NAME
