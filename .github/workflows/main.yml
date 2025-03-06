@@ -15,8 +15,8 @@ jobs:
       - name: Build docker image
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask"
-          docker build -t $IMAGE_NAME:latest .
-          docker save -o python-flask-image.tar $IMAGE_NAME:latest
+          sudo docker build -t $IMAGE_NAME:latest .
+          sudo docker save -o python-flask-image.tar $IMAGE_NAME:latest
 
       - name: upload docker image
         uses: actions/upload-artifact@v4
@@ -37,7 +37,7 @@ jobs:
       - name: load docker image
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask:latest"
-          docker load -i python-flask-image.tar
+          sudo docker load -i python-flask-image.tar
 
       - name: login to docker hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
@@ -45,4 +45,4 @@ jobs:
       - name: push to dockerhub
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/python-flask:latest"
-          docker push $IMAGE_NAME
+          sudo docker push $IMAGE_NAME
