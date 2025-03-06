@@ -45,8 +45,8 @@ jobs:
   
           - name: push to dockerhub
             run: |
-               IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}//python-flask"
-               docker push $IMAGE_NAME:latest
+               IMAGE_NAME="{{ secrets.DOCKER_USERNAME }}//python-flask:latest"
+               docker push $IMAGE_NAME:latest .
           
 
 
